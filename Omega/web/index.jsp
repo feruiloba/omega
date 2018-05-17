@@ -12,6 +12,53 @@
         <title>JSP Page</title>
     </head>
     <body>
+
+        <script>
+        
+        
+        function getData(url, handler) {
+            var xhttp = new XMLHttpRequest();
+            console.log("Llegamos hasta aqui!");
+            xhttp.onreadystatechange = function() {
+              if (this.readyState == 4 && this.status == 200) {
+ 
+                handler(xhttp);
+                        console.log("Hola");
+                    }
+                };
+                xhttp.open("GET", url, true);
+                xhttp.send();
+            }
+
+            function postData(url, handler, data) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+
+                        handler(xhttp);
+
+                    }
+                };
+
+                xhttp.open("POST", url, true);
+                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                console.log(data);
+                xhttp.send(JSON.stringify(data));
+            }
+
+            var getUsuario = function() {
+                getData("/Omega/webresources/dashboard/usuario", getUsuarioHandler);
+            }
+
+            function getUsuarioHandler(XMLHttpRequest xhr) {
+                var xmlDoc = xhr.responseXML;
+                console.log("HOLAA")
+                var root = xmlDoc.getElementsByTagName("response")[0].childNodes[0].nodeValue;
+                document.getElementById("demo").innerHTML = root;
+            }
+
+        </script>
+        
         <h1>Hello World!</h1>
         <div id="demo"></div>
         
@@ -19,7 +66,7 @@
             <h1>Iniciar sesion</h1>
             <input id="user" type="text" name="usuario" value="Juan" />
             <input id="cont" type="password" name="cont" value="123" />
-            <input type="button" onclick="getUsuario()" value="Iniciar sesión" /><!--onclick="postUsuario()"-->
+            <input type="button" onclick="getUsuario()" value="Iniciar sesión" />
         </form>
 
         <form action="http://localhost:8080/Omega/webresources/dashboard/usuario" method="POST">
@@ -46,56 +93,6 @@
         
     </body>
     
-    <script>
-        
-        
-        function getData(url, handler) {
-            var xhttp = new XMLHttpRequest();
-            
-            xhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
- 
-                handler(xhttp);
-                console.log("Hola");
-              }
-            };
-            xhttp.open("GET", url, true);
-            xhttp.send();
-          }
-          
-        function postData(url, handler, data) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-
-
-                    handler(xhttp);
-
-                }
-            };
-
-            xhttp.open("POST", url, true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            /* data se pasa en json.
-             data = {
-             nombre: document.getElementById("nameInput").text,
-             apellido: "asdasd"
-             }
-             */
-            console.log(data);
-            xhttp.send(JSON.stringify(data));
-        }
-
-        function getUsuario() {
-            getData("/Omega/webresources/dashboard/usuario", nuevoUsuarioHandler);
-        }
-        
-        function nuevoUsuarioHandler(){
-            var xmlDoc = xhr.responseXML;
-            var root = xmlDoc.getElementsByTagName("response")[0].childNodes[0].nodeValue;
-            document.getElementById("demo").innerHTML = root;
-        }
-        
-    </script>
+    
     
 </html>

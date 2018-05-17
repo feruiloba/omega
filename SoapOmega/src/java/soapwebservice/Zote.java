@@ -102,6 +102,7 @@ public class Zote {
             ResultSet rs = query.executeQuery(QueryString);
             if (!rs.next()) {
                 System.out.println("Ese usuario no existe");
+                return "NO SE PUDO";
             }
             return "<usuario>"
                      +"<username>" 
@@ -119,9 +120,8 @@ public class Zote {
                    + "</usuario>";
                     
         } catch (Exception e) {
-
+            return "NO SE PUDO";
         }
-        return "NO SE PUDO";
     }
 
     /**

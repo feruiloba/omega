@@ -71,6 +71,7 @@ public class DashboardRest {
         session.setAttribute("pass",pass);
         
         String usuario = getUsuario(username);
+        System.out.println(usuario);
         if (username != null) {
             HttpSession mySession = request.getSession();
             mySession.setAttribute("username", username);
