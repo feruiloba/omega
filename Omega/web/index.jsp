@@ -24,7 +24,7 @@
             <input id="log" type="button" onclick="getUsuario()" value="Iniciar sesión" />
         </form>
 
-        <form><!-- action="http://localhost:8080/Omega/webresources/usuario" method="POST">-->
+        <form id="registro"><!-- action="http://localhost:8080/Omega/webresources/usuario" method="POST">-->
             <h1>Registrarse</h1>
             <div>
                 <input id="username" placeholder="usuario" type="text" name="username" />
@@ -46,45 +46,44 @@
             <input id="reg" type="button" onclick="postUsuario()" value="Registrarse" /><!--onclick="postUsuario()"-->
         </form>
         
-        
-        
         <script>
         
-            function getData(url, handler) {
-                var xhttp = new XMLHttpRequest();
-                xhttp.onreadystatechange = function() {
-                    if (this.readyState == 4 && this.status == 200) {
-                        handler(xhttp);
-                    }
-                };
-                xhttp.open("GET", url, true);
-                xhttp.send();
-            }
 
-            function postData(url, handler, data) {
+            function sendData(url, handler, data, type) {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
                         handler(xhttp);
                     }
                 };
-
-                xhttp.open("POST", url, true);
-                xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-                console.log(data);
-                xhttp.send(JSON.stringify(data));
+                
+                url = url + "?";
+                for(var key in data){
+                    url = url + key + "=" + data[key] + "&";
+                }
+                url = url.substring(0, url.length - 1);
+                console.log(url);
+                xhttp.open(type, url, true);
+                xhttp.setRequestHeader("Content-type", "text/html");
+                xhttp.send();
             }
 
             var getUsuario = function() {
                 //console.log("Picado!");
-                getData("/Omega/webresources/usuario", getUsuarioHandler);
+                var data = {
+                    username: document.getElementById("user").value,
+                    pass: document.getElementById("cont").value
+                };
+                sendData("/Omega/webresources/usuario", getUsuarioHandler, data, "GET");
             };
 
             function getUsuarioHandler(xhr) {
                 var xmlDoc = xhr.responseXML;
-                console.log(xmlDoc  );
-                var root = xmlDoc.getElementsByTagName("username")[0].childNodes[0].nodeValue;
-                document.getElementById("demo").innerHTML = root;
+                console.log(xmlDoc);
+                var user = xmlDoc.getElementsByTagName("username")[0].childNodes[0].nodeValue;
+                if(user!=="NO SE PUDO"){
+                }
+                document.getElementById("demo").innerHTML = user;
             }
             
             var postUsuario = function() {
@@ -93,19 +92,22 @@
                 while(!genders[i].checked)
                     i++;
                 var selected = genders[i].value;
-                data = {
+                
+                var data = {
                     username: document.getElementById("username").value,
                     name: document.getElementById("name").value,
                     gender: selected,
+                    pass: document.getElementById("pass").value,
                     phone: document.getElementById("phone").value
                 };
+                
                 console.log(data);
-                postData("/Omega/webresources/usuario", postUsuarioHandler,data);
+                sendData("/Omega/webresources/usuario", postUsuarioHandler, data, "POST");
             };
             
             function postUsuarioHandler(xhr) {
                 var xmlDoc = xhr.responseXML;
-                console.log(xmlDoc  );
+                console.log(xmlDoc);
                 var root = xmlDoc.getElementsByTagName("username")[0].childNodes[0].nodeValue;
                 document.getElementById("demo").innerHTML = root;
             }
