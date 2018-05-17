@@ -134,6 +134,7 @@ public class Zote {
             Statement query = con.createStatement();
             String QueryString = "INSERT INTO USUARIOS VALUES ('" + username + "','" + name + "','" + gender + "','" + pass + "','" + phone + "')";
             int res = query.executeUpdate(QueryString);
+            
             return true;
         } catch (Exception e) {
             //Luego las imprimimos y asi
@@ -182,7 +183,35 @@ public class Zote {
      */
     @WebMethod(operationName = "getUsuarios")
     public String getUsuarios() {
-        //TODO write your implementation code here:
+        try{
+            Statement query = con.createStatement();
+            ResultSet rs = query.executeQuery("SELECT * FROM USUARIOS");
+            StringBuilder xml = new StringBuilder();
+            xml.append("<root>");
+            
+            while (rs.next()) {
+                xml.append("<usuario>");
+                xml.append("<username>" 
+                        +rs.getString("username")
+                     +"</username>"
+                     +"<name>"
+                        +rs.getString("name")
+                     +"</name>"
+                     +"<gender>"
+                        +rs.getString("gender")
+                     +"</gender>"
+                     +"<phone>"
+                        +rs.getString("phone")
+                     +"</phone>"
+                   + "</usuario>");
+               xml.append("</username>");
+            }
+            xml.append("</root>");
+            return xml.toString();
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+        
         return null;
     }
 

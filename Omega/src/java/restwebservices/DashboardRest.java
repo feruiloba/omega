@@ -58,17 +58,14 @@ public class DashboardRest {
         boolean a = crearBD("omegaBD","root","root");
         System.out.println(a+"");
         
-        boolean nuevo = insertUsuario("aguila","Aguilar","femenino","perro","123456");
+        boolean nuevo = insertUsuario("Adrian","Aguilar","femenino","perro","123");
         String res;
         if(nuevo)
             res="Se creo el nuevo usuario";
         else
             res="No se creo el nuevo usuario";
-        String usuario = getUsuario("aguila");
-        editaUsuario("aguila","Aguilars","masx","gato","5545434");
-        String usuario2 = getUsuario("palo");
-        
-        return "<root> <nuevo>" + res + "</nuevo>"+ " " +"<nuevo>usuario1:"+usuario+"usuario2:"+usuario2+"</nuevo> </root>";
+        String usuario = getUsuario("Ana");
+        return "<root> <nuevo>" + res + "</nuevo>"+ " " +"<nuevo>usuario1:"+usuario +"</nuevo> </root>";
         /*
         boolean a = crearBD("omegaBD","root","root");
         System.out.println(a+"");
@@ -112,14 +109,25 @@ public class DashboardRest {
     @Produces(MediaType.APPLICATION_XML)
     @Path("/usuario")
     public String getUsuario(@Context HttpServletRequest request) {
+        try{
         String username = request.getParameter("username");
         System.out.println(username);
         String usuario = getUsuario(username);
+        if(usuario.equals("NO SE PUDO")){
+            throw new ClassNotFoundException(); 
+        }
         if (username != null) {
             HttpSession mySession = request.getSession();
             mySession.setAttribute("username", username);
         }
+        usuario = getUsuarios();
         return usuario;
+        }
+        catch(Exception e){
+        String usuario = getUsuarios();
+        return "No se consiguio, los usuarios son:" + usuario;
+        }
+       
     }
     
     //Para insertar un usuario
@@ -131,6 +139,7 @@ public class DashboardRest {
         
         boolean insertado = insertUsuario(username, name, gender, pass, phone);
         System.out.println(insertado);
+        System.out.println(getUsuarios());
     }
     
     
@@ -169,6 +178,12 @@ public class DashboardRest {
         soapreference.Zote_Service service = new soapreference.Zote_Service();
         soapreference.Zote port = service.getZotePort();
         return port.editaUsuario(username, name, gender, password, phone);
+    }
+
+    private static String getUsuarios() {
+        soapreference.Zote_Service service = new soapreference.Zote_Service();
+        soapreference.Zote port = service.getZotePort();
+        return port.getUsuarios();
     }
     
     
