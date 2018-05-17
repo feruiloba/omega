@@ -15,11 +15,11 @@
         <h1>Hello World!</h1>
         <div id="demo"></div>
         
-        <form action="http://localhost:8080/Omega/webresources/dashboard/usuario" method="GET">
+        <form><!-- action="http://localhost:8080/Omega/webresources/dashboard/usuario" method="GET">-->
             <h1>Iniciar sesion</h1>
             <input id="user" type="text" name="usuario" value="Juan" />
             <input id="cont" type="password" name="cont" value="123" />
-            <input type="submit" value="Iniciar sesión" /><!--onclick="postUsuario()"-->
+            <input type="submit" onclick="getUsuario()" value="Iniciar sesión" /><!--onclick="postUsuario()"-->
         </form>
 
         <form action="http://localhost:8080/Omega/webresources/dashboard/usuario" method="POST">
@@ -55,15 +55,15 @@
             xhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
  
-            handler(xhttp);
-               
+                handler(xhttp);
+                console.log("Hola");
               }
             };
             xhttp.open("GET", url, true);
             xhttp.send();
           }
           
-          function postData(url, handler, data) {
+        function postData(url, handler, data) {
             var xhttp = new XMLHttpRequest();
             xhttp.onreadystatechange = function() {
               if (this.readyState == 4 && this.status == 200) {
@@ -86,20 +86,8 @@
             xhttp.send(JSON.stringify(data));
         }
 
-        function getMyDashboard() {
-            getData("/Omega/webresources/dashboard", myDashboardHandler);
-        }
-
-        function myDashboardHandler(xhr) {
-            var xmlDoc = xhr.responseXML;
-            var root = xmlDoc.getElementsByTagName("response")[0].childNodes[0].nodeValue;
-            document.getElementById("demo").innerHTML = root;
-        }
-        
-        function postUsuario(){
-            var usuario = document.getElementById("user").value;
-            var contrasegna = document.getElementById("cont").value;
-            postData("/Omega/webresources/dashboard/usuarios", nuevoUsuarioHandler, {user: usuario, cont: contrasegna});
+        function getUsuario() {
+            getData("/Omega/webresources/dashboard/usuario", nuevoUsuarioHandler);
         }
         
         function nuevoUsuarioHandler(){
@@ -107,20 +95,6 @@
             var root = xmlDoc.getElementsByTagName("response")[0].childNodes[0].nodeValue;
             document.getElementById("demo").innerHTML = root;
         }
-        
-        //getMyDashboard();
-
-
-        /*
-         * pal put y delete
-         * 
-         *  (this.readyState == 4 && (this.status == 200 || this.status == 204)){
-         *    handler....
-         *  }
-         * 
-         * 
-         */
-
         
     </script>
     

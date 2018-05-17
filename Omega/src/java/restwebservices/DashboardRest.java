@@ -42,93 +42,49 @@ public class DashboardRest {
      * @return an instance of java.lang.String
      */
     @GET
-    @Produces(MediaType.APPLICATION_XML)
-    public String getXml(@Context HttpServletRequest request) {
-        //TODO return proper representation object
+    @Produces(MediaType.APPLICATION_XML )
+    public String getHtml(@Context HttpServletRequest request) {
         
-        HttpSession session = request.getSession();
-        
-        session.setAttribute("username","Paloma");
         //session.invalidate();
-        
+        HttpSession session = request.getSession();
         if(session.getAttribute("username") == null){
-            return "<error>Session Expired</error>";
+            return "<user>Session Expired</user>";
         }
         
-        boolean a = crearBD("omegaBD","root","root");
-        System.out.println(a+"");
-        
-        boolean nuevo = insertUsuario("aguila","Aguilar","femenino","perro","123456");
-        String res;
-        if(nuevo)
-            res="Se creo el nuevo usuario";
-        else
-            res="No se creo el nuevo usuario";
-        String usuario = getUsuario("aguila");
-        editaUsuario("aguila","Aguilars","masx","gato","5545434");
-        String usuario2 = getUsuario("palo");
-        
-        return "<root> <nuevo>" + res + "</nuevo>"+ " " +"<nuevo>usuario1:"+usuario+"usuario2:"+usuario2+"</nuevo> </root>";
-        /*
-        boolean a = crearBD("omegaBD","root","root");
-        System.out.println(a+"");
-        String usuario = getUsuario("pepemil");
-        System.out.println(usuario);
-        return usuario;
-        */
-      /*  String soapResponse = myFirstSoapCall("Aloha", 42);
-        
-
-    //    String q = request.getParameter("q");
-    //    System.out.println(q);
-        
-        
-        return "<superroot>" + "<response>" + soapResponse + "</response>" + "<otracosa>OTRACOSAA</otracosa>" +  "</superroot>";*/
-      
+        String usuario = getUsuario(session.getAttribute("username").toString());
+       
+        return "<user>"+usuario+"</user>";
     }
 
-    /**
-     * PUT method for updating or creating an instance of DashboardRest
-     * @param content representation for the resource
-     */
-    @PUT
-    @Consumes(MediaType.APPLICATION_XML)
-    public void putXml(String content) {
-    }
-    
-    @POST
-    @Consumes(MediaType.APPLICATION_XML)
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("/{id}")
-    public void postXml(String content, @PathParam("id") String id) {
-        // localhost:8080/Omega/webasdasd/dashboard/78
-        
-        
-        
-    }
-    
     //Para iniciar sesión
     @GET
     @Produces(MediaType.APPLICATION_XML)
     @Path("/usuario")
     public String getUsuario(@Context HttpServletRequest request) {
-        String username = request.getParameter("username");
-        System.out.println(username);
+        crearBD("omegaBD","root","root");
+        
+        String username = request.getParameter("usuario");
+        String pass = request.getParameter("cont");
+        
+        HttpSession session = request.getSession();
+        session.setAttribute("username",username);
+        session.setAttribute("pass",pass);
+        
         String usuario = getUsuario(username);
         if (username != null) {
             HttpSession mySession = request.getSession();
             mySession.setAttribute("username", username);
         }
-        return usuario;
+        
+        return "<user>"+usuario+"</user>";
     }
     
     //Para insertar un usuario
     @POST
     @Produces("text/html")
-    //@Consumes(MediaType.APPLICATION_JSON)
     @Path("/usuario")
     public void postUsuario(@FormParam("username") String username, @FormParam("name") String name, @FormParam("gender") String gender, @FormParam("pass") String pass, @FormParam("phone") String phone) {
-        
+        crearBD("omegaBD","root","root");
         boolean insertado = insertUsuario(username, name, gender, pass, phone);
         System.out.println(insertado);
     }
