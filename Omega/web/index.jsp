@@ -19,7 +19,7 @@
             <h1>Iniciar sesion</h1>
             <input id="user" type="text" name="usuario" value="Juan" />
             <input id="cont" type="password" name="cont" value="123" />
-            <input type="submit" onclick="getUsuario()" value="Iniciar sesión" /><!--onclick="postUsuario()"-->
+            <input type="button" onclick="getUsuario()" value="Iniciar sesión" /><!--onclick="postUsuario()"-->
         </form>
 
         <form action="http://localhost:8080/Omega/webresources/dashboard/usuario" method="POST">
@@ -41,7 +41,7 @@
             <div>
                 <input type="number" placeholder="teléfono" name="phone" />
             </div>
-            <input type="submit" value="Registrarse" /><!--onclick="postUsuario()"-->
+            <input type="button" value="Registrarse" /><!--onclick="postUsuario()"-->
         </form>
         
     </body>
