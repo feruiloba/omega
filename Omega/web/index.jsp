@@ -46,6 +46,10 @@
             <input id="reg" type="button" onclick="postUsuario()" value="Registrarse" /><!--onclick="postUsuario()"-->
         </form>
         
+    <form id="extae" action="algo" hidden>
+        <input type="submit" value="scroll" name="scroll" />
+    </form>
+        
         <script>
         
 
@@ -82,8 +86,9 @@
                 console.log(xmlDoc);
                 var user = xmlDoc.getElementsByTagName("username")[0].childNodes[0].nodeValue;
                 if(user!=="NO SE PUDO"){
+                    document.getElementById("demo").innerHTML = user;
                 }
-                document.getElementById("demo").innerHTML = user;
+                document.getElementById("extae").submit();
             }
             
             var postUsuario = function() {
