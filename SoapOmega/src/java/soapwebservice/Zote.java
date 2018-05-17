@@ -101,7 +101,7 @@ public class Zote {
             QueryString = "select * from usuarios where username='" + username + "'";
             ResultSet rs = query.executeQuery(QueryString);
             if (!rs.next()) {
-                System.out.println("Ese usuario no existe");
+                System.out.println("SOAP: Ese usuario no existe");
                 return "NO SE PUDO";
             }
             return "<usuario>"

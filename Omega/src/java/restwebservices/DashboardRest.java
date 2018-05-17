@@ -19,13 +19,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.PathParam;
-
 /**
  * REST Web Service
  *
  * @author PLEVERG
  */
-@Path("dashboard")
+@Path("usuario")
 public class DashboardRest {
 
     @Context
@@ -40,7 +39,7 @@ public class DashboardRest {
     /**
      * Retrieves representation of an instance of restwebservices.DashboardRest
      * @return an instance of java.lang.String
-     */
+    
     @GET
     @Produces(MediaType.APPLICATION_XML )
     public String getHtml(@Context HttpServletRequest request) {
@@ -55,11 +54,12 @@ public class DashboardRest {
        
         return "<user>"+usuario+"</user>";
     }
-
+    * 
+    */
+    
     //Para iniciar sesión
     @GET
     @Produces(MediaType.APPLICATION_XML)
-    @Path("/usuario")
     public String getUsuario(@Context HttpServletRequest request) {
         crearBD("omegaBD","root","root");
         
@@ -77,13 +77,12 @@ public class DashboardRest {
             mySession.setAttribute("username", username);
         }
         
-        return "<user>"+usuario+"</user>";
+        return "<username>"+usuario+"</username>";
     }
     
     //Para insertar un usuario
     @POST
-    @Produces("text/html")
-    @Path("/usuario")
+    @Consumes(MediaType.APPLICATION_JSON)
     public void postUsuario(@FormParam("username") String username, @FormParam("name") String name, @FormParam("gender") String gender, @FormParam("pass") String pass, @FormParam("phone") String phone) {
         crearBD("omegaBD","root","root");
         boolean insertado = insertUsuario(username, name, gender, pass, phone);
