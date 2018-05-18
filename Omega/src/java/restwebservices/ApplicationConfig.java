@@ -29,7 +29,8 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
-        resources.add(restwebservices.DashboardRest.class);
+        resources.add(restwebservices.JSONRest.class);
+        resources.add(restwebservices.TablaRest.class);
         resources.add(restwebservices.UserRest.class);
     }
     

@@ -44,7 +44,7 @@
                 String nueva = request.getParameter("nueva");
                 if (nueva != null) {
                     mySession.setAttribute("nueva", usuario);
-                    RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/agregadorTablas");
+                    RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/agregateTabla");
                     dispatcher.forward(request, response);
                 }
                 
