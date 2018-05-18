@@ -24,6 +24,8 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
+    private final static QName _AgregaTabla_QNAME = new QName("http://soapwebservice/", "agregaTabla");
+    private final static QName _AgregaTablaResponse_QNAME = new QName("http://soapwebservice/", "agregaTablaResponse");
     private final static QName _CrearBD_QNAME = new QName("http://soapwebservice/", "crearBD");
     private final static QName _CrearBDResponse_QNAME = new QName("http://soapwebservice/", "crearBDResponse");
     private final static QName _EditaUsuario_QNAME = new QName("http://soapwebservice/", "editaUsuario");
@@ -46,6 +48,22 @@ public class ObjectFactory {
      * 
      */
     public ObjectFactory() {
+    }
+
+    /**
+     * Create an instance of {@link AgregaTabla }
+     * 
+     */
+    public AgregaTabla createAgregaTabla() {
+        return new AgregaTabla();
+    }
+
+    /**
+     * Create an instance of {@link AgregaTablaResponse }
+     * 
+     */
+    public AgregaTablaResponse createAgregaTablaResponse() {
+        return new AgregaTablaResponse();
     }
 
     /**
@@ -174,6 +192,24 @@ public class ObjectFactory {
      */
     public MyFirstSoapCallResponse createMyFirstSoapCallResponse() {
         return new MyFirstSoapCallResponse();
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AgregaTabla }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soapwebservice/", name = "agregaTabla")
+    public JAXBElement<AgregaTabla> createAgregaTabla(AgregaTabla value) {
+        return new JAXBElement<AgregaTabla>(_AgregaTabla_QNAME, AgregaTabla.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link AgregaTablaResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soapwebservice/", name = "agregaTablaResponse")
+    public JAXBElement<AgregaTablaResponse> createAgregaTablaResponse(AgregaTablaResponse value) {
+        return new JAXBElement<AgregaTablaResponse>(_AgregaTablaResponse_QNAME, AgregaTablaResponse.class, null, value);
     }
 
     /**
