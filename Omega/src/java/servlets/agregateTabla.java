@@ -7,16 +7,18 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author FRUILOBAP
+ * @author PLEVERG
  */
-public class agregadorTablas extends HttpServlet {
+public class agregateTabla extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,12 +37,25 @@ public class agregadorTablas extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet agregadorTablas</title>");            
+            out.println("<title>Servlet agregateTabla</title>");            
             out.println("</head>");
-            out.println("<body><TITLE> Add/Remove dynamic rows in HTML table </TITLE>\n" +
-"<SCRIPT language=\"javascript\">\n" +
-"    function addRow(tableID) {\n" +
-"\n" +
+            out.println("<body>");
+            
+            HttpSession mySession = request.getSession();
+            String usuario = mySession.getAttribute("username").toString();
+            out.println("<label id=\"usuario\" hidden=true>"+usuario+"</label>");
+            String nextJSP = "/include2.jsp";
+            RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher(nextJSP);
+            dispatcher.include(request, response);
+            
+            out.println();
+            out.println("</html>");
+        }
+    }
+    public String scriptAgregaFila(){
+    return "<SCRIPT language=\"javascript\">\n" +
+                "    function addRow(tableID) {\n" +
+                "\n" +
 "        var table = document.getElementById(tableID);\n" +
 "\n" +
 "        var rowCount = table.rows.length;\n" +
@@ -53,13 +68,40 @@ public class agregadorTablas extends HttpServlet {
 "        cell1.appendChild(element1);\n" +
 "\n" +
 "        var cell2 = row.insertCell(1);\n" +
-"        cell2.innerHTML = rowCount + 1;\n" +
+"        cell2.innerHTML = rowCount ;\n" +
 "\n" +
 "        var cell3 = row.insertCell(2);\n" +
 "        var element2 = document.createElement(\"input\");\n" +
 "        element2.type = \"text\";\n" +
 "        element2.name = \"txtbox[]\";\n" +
 "        cell3.appendChild(element2);\n" +
+"\n" +
+"\n" +
+"        var cell4 = row.insertCell(3);\n" +
+"        var element3 = document.createElement(\"select\");\n" +
+"        element3.name = \"tipos\";\n" +
+"        var option = document.createElement('option');\n"+
+"        var option1 = document.createElement('option');\n"+
+"        var option2 = document.createElement('option');\n"+
+"        var option3 = document.createElement('option');\n"+
+"        var option4 = document.createElement('option');\n"+
+"        option.text   = \"varchar25\" ;\n"+
+"        option.value  = \"varchar25\";\n"+
+"        option1.text  = \"varchar50\" ;\n"+
+"        option1.value = \"varchar50\" ;\n"+
+"        option2.text  = \"Integer\" ;\n"+
+"        option2.value = \"Integer\" ;\n"+
+"        option3.text  = \"Double\" ;\n"+
+"        option3.value = \"Double\" ;\n"+
+"        option4.text  = \"boolean\" ;\n"+
+"        option4.value = \"boolean\" ;\n"+
+"        element3.add (option,0);\n" +
+"        element3.add (option1,1);\n" +
+"        element3.add (option2,2);\n" +
+"        element3.add (option3,3);\n" +
+"        element3.add (option4,4);\n" +
+"        cell4.appendChild(element3);\n" +
+
 "\n" +
 "\n" +
 "    }\n" +
@@ -85,30 +127,34 @@ public class agregadorTablas extends HttpServlet {
 "        }\n" +
 "    }\n" +
 "\n" +
-"</SCRIPT>\n" +
-"</HEAD>\n" +
-"<BODY>\n" +
-"\n" +
-"<INPUT type=\"button\" value=\"Add Row\" onclick=\"addRow('dataTable')\" />\n" +
-"\n" +
-"<INPUT type=\"button\" value=\"Delete Row\" onclick=\"deleteRow('dataTable')\" />\n" +
-"\n" +
-"<TABLE id=\"dataTable\" width=\"350px\" border=\"1\">\n" +
-"    <TR>\n" +
-"        <TD><INPUT type=\"checkbox\" name=\"chk\"/></TD>\n" +
-"        <TD> 1 </TD>\n" +
-"        <TD> <INPUT type=\"text\" /> </TD>\n" +
-"    </TR>\n" +
-"</TABLE>\n" +
-"\n" +
-"</BODY>"
-                    + "");
-            out.println("<h1>Servlet agregadorTablas at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
+            
+ "function createStrings(tableID){\n"+
+"        try {\n" + 
+"var table = document.getElementById('dataTable'); "+
+"var params = [];"+
+"var types = []; "+
 
+"for(var r in table.rows){ "+
+"	if(['length', 'item', 'namedItem'].indexOf(r) == -1 && r > 0){  "+
+"        if(table.rows[r].cells[2].childNodes[0].value && table.rows[r].cells[3].childNodes[0].value){ "+
+"		params.push(table.rows[r].cells[2].childNodes[0].value); "+
+"		types.push(table.rows[r].cells[3].childNodes[0].value); "+
+"    	} "+
+"   	} "+
+"    } "+
+"console.log(params, types); "+
+"}catch(e){ alert(e);}"+
+            " }"+
+           
+ ""+
+            
+"</SCRIPT>\n" ;
+            
+            
+    
+    }
+    
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.

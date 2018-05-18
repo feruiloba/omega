@@ -32,6 +32,8 @@ public class ObjectFactory {
     private final static QName _EditaUsuarioResponse_QNAME = new QName("http://soapwebservice/", "editaUsuarioResponse");
     private final static QName _EliminaUsuario_QNAME = new QName("http://soapwebservice/", "eliminaUsuario");
     private final static QName _EliminaUsuarioResponse_QNAME = new QName("http://soapwebservice/", "eliminaUsuarioResponse");
+    private final static QName _GetTabla_QNAME = new QName("http://soapwebservice/", "getTabla");
+    private final static QName _GetTablaResponse_QNAME = new QName("http://soapwebservice/", "getTablaResponse");
     private final static QName _GetUsuario_QNAME = new QName("http://soapwebservice/", "getUsuario");
     private final static QName _GetUsuarioResponse_QNAME = new QName("http://soapwebservice/", "getUsuarioResponse");
     private final static QName _GetUsuarios_QNAME = new QName("http://soapwebservice/", "getUsuarios");
@@ -112,6 +114,22 @@ public class ObjectFactory {
      */
     public EliminaUsuarioResponse createEliminaUsuarioResponse() {
         return new EliminaUsuarioResponse();
+    }
+
+    /**
+     * Create an instance of {@link GetTabla }
+     * 
+     */
+    public GetTabla createGetTabla() {
+        return new GetTabla();
+    }
+
+    /**
+     * Create an instance of {@link GetTablaResponse }
+     * 
+     */
+    public GetTablaResponse createGetTablaResponse() {
+        return new GetTablaResponse();
     }
 
     /**
@@ -264,6 +282,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://soapwebservice/", name = "eliminaUsuarioResponse")
     public JAXBElement<EliminaUsuarioResponse> createEliminaUsuarioResponse(EliminaUsuarioResponse value) {
         return new JAXBElement<EliminaUsuarioResponse>(_EliminaUsuarioResponse_QNAME, EliminaUsuarioResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetTabla }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soapwebservice/", name = "getTabla")
+    public JAXBElement<GetTabla> createGetTabla(GetTabla value) {
+        return new JAXBElement<GetTabla>(_GetTabla_QNAME, GetTabla.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link GetTablaResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soapwebservice/", name = "getTablaResponse")
+    public JAXBElement<GetTablaResponse> createGetTablaResponse(GetTablaResponse value) {
+        return new JAXBElement<GetTablaResponse>(_GetTablaResponse_QNAME, GetTablaResponse.class, null, value);
     }
 
     /**

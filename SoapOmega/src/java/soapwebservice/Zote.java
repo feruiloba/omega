@@ -284,6 +284,9 @@ public class Zote {
                         case ("varchar50"):
                             addparams.append("varchar(50),");
                             break;
+                        case("boolean"):
+                            addparams.append("BOOLEAN, ");
+                            break;
 
                     }
                 }
