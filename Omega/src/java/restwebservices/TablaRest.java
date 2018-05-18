@@ -7,6 +7,7 @@ package restwebservices;
 
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
+
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -19,6 +20,7 @@ import javax.ws.rs.core.MediaType;
 /**
  * REST Web Service
  *
+ * @author FRUILOBAP
  * @author PLEVERG
  */
 @Path("tabla")
@@ -31,12 +33,21 @@ public class TablaRest {
      * Creates a new instance of TablaResource
      */
     public TablaRest() {
+      
     }
 
-    /**
-     * Retrieves representation of an instance of restwebservices.TablaResource
-     * @return an instance of java.lang.String
-     */
+    @PUT
+    @Consumes(MediaType.TEXT_HTML)
+    public void putHtml(@QueryParam("nomTabla") String nomTabla, @QueryParam("valores") String valores, @QueryParam("columnas") String columnas) {
+        System.out.println("PUT:");
+        System.out.println(valores);
+        System.out.println(columnas);
+        System.out.println(nomTabla);
+        updateTabla(nomTabla, valores, columnas);
+    }
+
+    
+
     @GET
     @Produces(MediaType.APPLICATION_XML)
     public String getXml() {
@@ -54,19 +65,16 @@ public class TablaRest {
         agregaTabla(username,users,params,tipos);
     }
     
-    /**
-     * PUT method for updating or creating an instance of TablaResource
-     * @param content representation for the resource
-     */
-    @PUT
-    @Consumes(MediaType.APPLICATION_XML)
-    public void putXml(String content) {
-    }
-
     private static Boolean agregaTabla(java.lang.String username, java.lang.String nombre, java.lang.String params, java.lang.String tipos) {
         soapreference.Zote_Service service = new soapreference.Zote_Service();
         soapreference.Zote port = service.getZotePort();
         return port.agregaTabla(username, nombre, params, tipos);
+    }
+  
+   private static Boolean updateTabla(java.lang.String nomTabla, java.lang.String valores, java.lang.String columnas) {
+        soapreference.Zote_Service service = new soapreference.Zote_Service();
+        soapreference.Zote port = service.getZotePort();
+        return port.updateTabla(nomTabla, valores, columnas);
     }
     
     

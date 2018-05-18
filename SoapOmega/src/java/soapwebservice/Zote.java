@@ -347,7 +347,7 @@ public class Zote {
                         System.out.println("Columna " + i + "es: " + metadata.getColumnName(i));
                         resp += metadata.getColumnName(i)+",";
                     }
-                    resp+="|";
+                    resp+="&";
                 }
                 for (int i = 1; i <= columnCount; i++) {
                         System.out.println("Columna " + i + "es: " + metadata.getColumnName(i));
@@ -368,5 +368,58 @@ public class Zote {
         try{con.close();}catch(Exception e){}
         return resp;
     }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "updateTabla")
+    public Boolean updateTabla(@WebParam(name = "nomTabla") String nomTabla, @WebParam(name = "valores") String valores, @WebParam(name = "columnas") String columnas) {
+        //TODO write your implementation code here:
+        System.out.println("SOAP:");
+        System.out.println(nomTabla);
+        System.out.println(valores);
+        System.out.println(columnas);
+        
+        String[] vals = valores.split(":");
+        String[] cols = columnas.split(":");
+        String QueryString;
+        
+        boolean resp;
+        try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd, usuario, cont);
+            Statement query = con.createStatement();
+            /*
+        Si el usuario no quiere cmabiar algo va a ser el mismo al anterior, se guardaran los parametros pasados
+             */
+            QueryString = "UPDATE "+nomTabla+" SET ";
+            for(int i=0; i<cols.length; i++){
+                QueryString = QueryString + cols[i]+"='" + vals[i] + "', ";
+            }
+            QueryString = QueryString.substring(0,QueryString.length()-2);
+            System.out.println(QueryString);
+            
+            ResultSet rsColumns = null;
+            DatabaseMetaData meta = con.getMetaData();
+            rsColumns = meta.getColumns(null, null, nomTabla, null);
+            while (rsColumns.next()) {
+                System.out.println(rsColumns.getString("TYPE_NAME"));
+                System.out.println("Que pasaaa");
+            }
+            //query.executeUpdate(QueryString);
+            con.close();
+            resp=true;
+        } catch (Exception e) {
+            System.err.println("ERRROOOOR " + e.getMessage());
+            resp=false;
+        }
+        try {
+            con.close();
+        } catch (Exception e) {
+        }
+        return resp;
+        
+    }
+    
 
 }
