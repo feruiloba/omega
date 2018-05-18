@@ -25,17 +25,8 @@ import soapreference.Zote_Service;
  *
  * @author PLEVERG
  */
-public class algo extends HttpServlet {
+public class algomas extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/Zote/Zote.wsdl")
     private Zote_Service service;
     /**
@@ -55,9 +46,8 @@ public class algo extends HttpServlet {
             HttpSession session = request.getSession();
             String usuario = session.getAttribute("username").toString();
             
-            boolean prueba1 = agregaTabla(usuario, "Amigos","nombre,genero,edad","varchar50,varchar25,Integer");
-            boolean prueba2 = agregaTabla(usuario, "Mascotas","nombre,raza,edad","varchar50,varchar25,Integer");
-            out.println("<h1>"+prueba1+"</h1>");
+            boolean prueba = agregaTabla(usuario, "Amigos","nombre,genero,edad","varchar50,varchar25,Integer");
+            out.println("<h1>"+prueba+"</h1>");
 
       try{
           
@@ -68,7 +58,7 @@ public class algo extends HttpServlet {
                             "root",
                             "root");
             Statement st = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY); 
-            ResultSet rs = st.executeQuery("SELECT * FROM TIENE"); // WHERE username = '"+usuario+"'");   
+            ResultSet rs = st.executeQuery("SELECT * FROM USUARIOS"); // WHERE username = '"+usuario+"'");   
 
             int row = 0;
             Object [][] myResultSet = ResultSetToArray(rs);
@@ -114,6 +104,7 @@ public class algo extends HttpServlet {
         soapreference.Zote port = service.getZotePort();
         return port.agregaTabla(username, nombre, params, tipos);
     }
+
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

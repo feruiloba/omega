@@ -12,17 +12,19 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Hello World!</h1>
+
+        
+        <h1>Aplicación Omega!</h1>
         <div id="demo"></div>
         
         <form><!-- action="http://localhost:8080/Omega/webresources/dashboard/usuario" method="GET">-->
             <h1>Iniciar sesion</h1>
             <input id="user" type="text" name="usuario" value="Juan" />
             <input id="cont" type="password" name="cont" value="123" />
-            <input type="submit" onclick="getUsuario()" value="Iniciar sesión" /><!--onclick="postUsuario()"-->
+            <input id="log" type="button" onclick="getUsuario()" value="Iniciar sesión" />
         </form>
 
-        <form action="http://localhost:8080/Omega/webresources/dashboard/usuario" method="POST">
+        <form id="registro"><!-- action="http://localhost:8080/Omega/webresources/usuario" method="POST">-->
             <h1>Registrarse</h1>
             <div>
                 <input id="username" placeholder="usuario" type="text" name="username" />
@@ -39,63 +41,86 @@
                 <input type="radio" name="gender" value="noze" />No te digo
             </div>
             <div>
-                <input type="number" placeholder="teléfono" name="phone" />
+                <input id="phone" type="number" placeholder="teléfono" />
             </div>
-            <input type="submit" value="Registrarse" /><!--onclick="postUsuario()"-->
+            <input id="reg" type="button" onclick="postUsuario()" value="Registrarse" /><!--onclick="postUsuario()"-->
         </form>
+        
+    <form id="extae" action="algo" hidden>
+        <input type="submit" value="scroll" name="scroll" />
+    </form>
+        
+        <script>
+        
+
+            function sendData(url, handler, data, type) {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        handler(xhttp);
+                    }
+                };
+                
+                url = url + "?";
+                for(var key in data){
+                    url = url + key + "=" + data[key] + "&";
+                }
+                url = url.substring(0, url.length - 1);
+                console.log(url);
+                xhttp.open(type, url, true);
+                xhttp.setRequestHeader("Content-type", "text/html");
+                xhttp.send();
+            }
+
+            var getUsuario = function() {
+                //console.log("Picado!");
+                var data = {
+                    username: document.getElementById("user").value,
+                    pass: document.getElementById("cont").value
+                };
+                sendData("/Omega/webresources/usuario", getUsuarioHandler, data, "GET");
+            };
+
+            function getUsuarioHandler(xhr) {
+                var xmlDoc = xhr.responseXML;
+                console.log(xmlDoc);
+                var user = xmlDoc.getElementsByTagName("username")[0].childNodes[0].nodeValue;
+                if(user!=="NO SE PUDO"){
+                    document.getElementById("demo").innerHTML = user;
+                }
+                document.getElementById("extae").submit();
+            }
+            
+            var postUsuario = function() {
+                var genders = document.getElementsByName("gender");
+                var i = 0;
+                while(!genders[i].checked)
+                    i++;
+                var selected = genders[i].value;
+                
+                var data = {
+                    username: document.getElementById("username").value,
+                    name: document.getElementById("name").value,
+                    gender: selected,
+                    pass: document.getElementById("pass").value,
+                    phone: document.getElementById("phone").value
+                };
+                
+                console.log(data);
+                sendData("/Omega/webresources/usuario", postUsuarioHandler, data, "POST");
+            };
+            
+            function postUsuarioHandler(xhr) {
+                var xmlDoc = xhr.responseXML;
+                console.log(xmlDoc);
+                var root = xmlDoc.getElementsByTagName("username")[0].childNodes[0].nodeValue;
+                document.getElementById("demo").innerHTML = root;
+            }
+            
+        </script>
         
     </body>
     
-    <script>
-        
-        
-        function getData(url, handler) {
-            var xhttp = new XMLHttpRequest();
-            
-            xhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
- 
-                handler(xhttp);
-                console.log("Hola");
-              }
-            };
-            xhttp.open("GET", url, true);
-            xhttp.send();
-          }
-          
-        function postData(url, handler, data) {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-              if (this.readyState == 4 && this.status == 200) {
-
-
-                    handler(xhttp);
-
-                }
-            };
-
-            xhttp.open("POST", url, true);
-            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-            /* data se pasa en json.
-             data = {
-             nombre: document.getElementById("nameInput").text,
-             apellido: "asdasd"
-             }
-             */
-            console.log(data);
-            xhttp.send(JSON.stringify(data));
-        }
-
-        function getUsuario() {
-            getData("/Omega/webresources/dashboard/usuario", nuevoUsuarioHandler);
-        }
-        
-        function nuevoUsuarioHandler(){
-            var xmlDoc = xhr.responseXML;
-            var root = xmlDoc.getElementsByTagName("response")[0].childNodes[0].nodeValue;
-            document.getElementById("demo").innerHTML = root;
-        }
-        
-    </script>
+    
     
 </html>

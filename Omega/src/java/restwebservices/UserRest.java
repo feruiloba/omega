@@ -81,7 +81,7 @@ public class UserRest {
     @POST
     @Consumes("text/html")
     public void postUsuario(@QueryParam("username") String username, @QueryParam("name") String name, @QueryParam("gender") String gender, @QueryParam("pass") String pass, @QueryParam("phone") String phone) {
-        crearBD("omegaBD","root","root");
+        
         System.out.println("Está creando BD");
         System.out.println("POST: ");
         System.out.println(username+" "+ name+" "+ gender+" "+pass+" "+ phone);

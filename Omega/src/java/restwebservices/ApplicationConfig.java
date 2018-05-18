@@ -30,6 +30,7 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(restwebservices.DashboardRest.class);
+        resources.add(restwebservices.UserRest.class);
     }
     
 }

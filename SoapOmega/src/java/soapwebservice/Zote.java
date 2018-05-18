@@ -27,7 +27,7 @@ import javax.ejb.Stateless;
 @Stateless()
 public class Zote {
    static Connection con;
-
+   static String nombrebd, cont, usuario;
     @WebMethod(operationName = "hello")
     public String hello(@WebParam(name = "name") String txt) {
         return "Hello " + txt + " !";
@@ -61,9 +61,14 @@ public class Zote {
      */
     @WebMethod(operationName = "crearBD")
     public Boolean crearBD(@WebParam(name = "nombrebd") String nombrebd, @WebParam(name = "cont") String cont, @WebParam(name = "usuario") String usuario) {
+        boolean resp;
         try {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd + ";create=true;", usuario, cont);
+            this.nombrebd = nombrebd;
+            this.cont = cont;
+            this.usuario = usuario;
+            
             Statement query = con.createStatement();
             System.out.println("Base de datos creada");
             String QueryString;
@@ -85,18 +90,23 @@ public class Zote {
                 System.out.println("Tabla usuarios ya existe");
             }
             if(!tablas.contains("TIENE")) {
-                QueryString = "create table tiene (username varchar(25) not null, nombre_tabla int not null, primary key(username))";
+                QueryString = "create table tiene (username varchar(25) not null, nombre_tabla varchar(25) not null)";
                 query.executeUpdate(QueryString);
                 System.out.println("Creando tabla tiene");
             }
             else
                 System.out.println("Tabla tiene ya existe");
             
-            return true;
+            resp= true;
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            return false;
+            resp= false;
         }
+        
+        try{
+            con.close();
+        }catch(Exception e){}
+        return resp;
     }
 
     /**
@@ -105,7 +115,10 @@ public class Zote {
     @WebMethod(operationName = "getUsuario")
     public String getUsuario(@WebParam(name = "username") String username) {
         String QueryString;
+        String resp;
         try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd, usuario, cont);
             Statement query = con.createStatement();
             QueryString = "select * from usuarios where username='" + username + "'";
             ResultSet rs = query.executeQuery(QueryString);
@@ -113,7 +126,7 @@ public class Zote {
                 System.out.println("SOAP: Ese usuario no existe");
                 return "NO SE PUDO";
             }
-            return "<usuario>"
+            resp= "<usuario>"
                      +"<username>" 
                         +rs.getString("username")
                      +"</username>"
@@ -129,8 +142,13 @@ public class Zote {
                    + "</usuario>";
                     
         } catch (Exception e) {
-            return "NO SE PUDO";
+            resp= "NO SE PUDO";
         }
+        try{
+            con.close();
+        }catch(Exception e){}
+        return resp;
+        
     }
 
     /**
@@ -138,17 +156,22 @@ public class Zote {
      */
     @WebMethod(operationName = "insertUsuario")
     public Boolean insertUsuario(@WebParam(name = "username") String username, @WebParam(name = "name") String name, @WebParam(name = "gender") String gender, @WebParam(name = "pass") String pass, @WebParam(name = "phone") String phone) {
-        
+        boolean resp;
         try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd, usuario, cont);
             Statement query = con.createStatement();
             String QueryString = "INSERT INTO USUARIOS VALUES ('" + username + "','" + name + "','" + gender + "','" + pass + "','" + phone + "')";
             int res = query.executeUpdate(QueryString);
-            return true;
+            resp = true;
         } catch (Exception e) {
             //Luego las imprimimos y asi
-            return false;
+            resp = false;
         }
-        
+        try{
+            con.close();
+        }catch(Exception e){}
+        return resp;
     }
 
     /**
@@ -156,15 +179,23 @@ public class Zote {
      */
     @WebMethod(operationName = "eliminaUsuario")
     public Boolean eliminaUsuario(@WebParam(name = "username") String username, @WebParam(name = "pass") String pass) {
+        boolean resp;
         try{
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd, usuario, cont);
         Statement query = con.createStatement();
         String QueryString = "DELETE FROM USUARIOS WHERE username='"+ username+"' AND password='"+pass+"'";
         query.executeUpdate(QueryString);
-        return true;
+        resp= true;
         }catch(Exception e){
             System.err.println("ERRROOOOR " + e.getMessage());
-            return false;
+            resp= false;
         }
+        
+        try{
+            con.close();
+        }catch(Exception e){}
+        return resp;
     }
 
     /**
@@ -172,18 +203,28 @@ public class Zote {
      */
     @WebMethod(operationName = "editaUsuario")
     public String editaUsuario(@WebParam(name = "username") String username, @WebParam(name = "name") String name, @WebParam(name = "gender") String gender, @WebParam(name = "password") String password, @WebParam(name = "phone") String phone) {
-   try{
-        Statement query = con.createStatement();
-        /*
+        String resp;
+        try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd, usuario, cont);
+            Statement query = con.createStatement();
+            /*
         Si el usuario no quiere cmabiar algo va a ser el mismo al anterior, se guardaran los parametros pasados
-        */
-        String QueryString = "UPDATE USUARIOS SET password='"+password+"', name='"+name+"', gender='"+gender+"', phone='"+phone+"' WHERE username='"+username+"'";
-        query.executeUpdate(QueryString);
-        return "El usuario:" + username +" Ha sido editado";
-        }catch(Exception e){
+             */
+            String QueryString = "UPDATE USUARIOS SET password='" + password + "', name='" + name + "', gender='" + gender + "', phone='" + phone + "' WHERE username='" + username + "'";
+            query.executeUpdate(QueryString);
+            con.close();
+            resp = "El usuario:" + username + " Ha sido editado";
+        } catch (Exception e) {
             System.err.println("ERRROOOOR " + e.getMessage());
-            return "Error al editar al usuario";
+            resp = "Error al editar al usuario";
         }
+        try {
+            con.close();
+        } catch (Exception e) {
+        }
+        return resp;
+
     }
 
     /**
@@ -204,12 +245,15 @@ public class Zote {
         //TODO write your implementation code here:
         String[] parametros = params.split(",");
         String[] type = tipos.split(","); 
-        
+        boolean resp;
         StringBuilder addparams = new StringBuilder();
         addparams.append("create table");
         addparams.append(" "+nombre + " (id int not null, ");
         
         try{
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd, usuario, cont);
+            
             for(int i = 0; i<parametros.length; i++){
                 addparams.append(parametros[i]+" ");
                 switch(type[i]){
@@ -235,16 +279,23 @@ public class Zote {
             query.executeUpdate(addparams.toString());
             System.out.println("Se agregó la tabla");
             //crearBD("omegaBD","root","root");
+            con.close();
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd, usuario, cont);
             
-            String queryTiene = "insert into tiene values('"+username+"','"+nombre+"')";
+            String queryTiene = "insert into TIENE values('"+username+"','"+nombre+"')";
             Statement query2 = con.createStatement();
             query2.executeUpdate(queryTiene);
             System.out.println("Si insertó en tiene");
-            return true;
+            resp= true;
         }catch(Exception e){
-            return false;
+            resp= false;
         }
+        try{
+            con.close();
+        }catch(Exception e){}
+        return resp;
+        
     }
-
 
 }
