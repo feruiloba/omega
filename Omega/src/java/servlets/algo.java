@@ -55,33 +55,29 @@ public class algo extends HttpServlet {
             HttpSession session = request.getSession();
             String usuario = session.getAttribute("username").toString();
             
-            boolean prueba1 = agregaTabla(usuario, "Amigos","nombre,genero,edad","varchar50,varchar25,Integer");
-            boolean prueba2 = agregaTabla(usuario, "Mascotas","nombre,raza,edad","varchar50,varchar25,Integer");
-            out.println("<h1>"+prueba1+"</h1>");
+            if (usuario != null) {
+                //boolean prueba1 = agregaTabla(usuario, "Amigos","nombre,genero,edad","varchar50,varchar25,Integer");
+                //boolean prueba2 = agregaTabla(usuario, "Mascotas","nombre,raza,edad","varchar50,varchar25,Integer");
+                //out.println("<h1>"+prueba1+"</h1>");
 
-      try{
-          
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-            Connection con
-                    = DriverManager.getConnection(
-                            "jdbc:derby://localhost:1527/omegaBD",
-                            "root",
-                            "root");
-            Statement st = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY); 
-            ResultSet rs = st.executeQuery("SELECT * FROM TIENE"); // WHERE username = '"+usuario+"'");   
+                Class.forName("org.apache.derby.jdbc.ClientDriver");
+                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/omegaBD","root","root");
+                Statement st = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+                ResultSet rs = st.executeQuery("SELECT * FROM TIENE where username='" + usuario + "'"); // WHERE username = '"+usuario+"'");   
 
-            int row = 0;
-            Object [][] myResultSet = ResultSetToArray(rs);
-            HttpSession mySession = request.getSession();
-            mySession.setAttribute("myResultSet", myResultSet);
-            mySession.setAttribute("row",row);
-            RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/scroll.jsp");
-            dispatcher.forward(request,response);
-            con.close();
-            }catch(Exception e){
-                out.println("ERROR: "+e.toString());
+                int row = 0;
+                Object[][] myResultSet = ResultSetToArray(rs);
+
+                session.setAttribute("myResultSet", myResultSet);
+                session.setAttribute("row", row);
+                RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/scroll.jsp");
+                dispatcher.forward(request, response);
+                con.close();
             }
-          
+            
+        }
+        catch(Exception e){
+                System.out.println("ERROR: "+e.toString());
         }
     }
     

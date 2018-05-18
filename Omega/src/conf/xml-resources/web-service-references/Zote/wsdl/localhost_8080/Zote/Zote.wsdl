@@ -4,29 +4,11 @@
 <xsd:import namespace="http://soapwebservice/" schemaLocation="http://localhost:8080/Zote/Zote?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="myFirstSoapCall">
-<part name="parameters" element="tns:myFirstSoapCall"/>
+<message name="crearBD">
+<part name="parameters" element="tns:crearBD"/>
 </message>
-<message name="myFirstSoapCallResponse">
-<part name="parameters" element="tns:myFirstSoapCallResponse"/>
-</message>
-<message name="hello">
-<part name="parameters" element="tns:hello"/>
-</message>
-<message name="helloResponse">
-<part name="parameters" element="tns:helloResponse"/>
-</message>
-<message name="editaUsuario">
-<part name="parameters" element="tns:editaUsuario"/>
-</message>
-<message name="editaUsuarioResponse">
-<part name="parameters" element="tns:editaUsuarioResponse"/>
-</message>
-<message name="agregaTabla">
-<part name="parameters" element="tns:agregaTabla"/>
-</message>
-<message name="agregaTablaResponse">
-<part name="parameters" element="tns:agregaTablaResponse"/>
+<message name="crearBDResponse">
+<part name="parameters" element="tns:crearBDResponse"/>
 </message>
 <message name="getUsuario">
 <part name="parameters" element="tns:getUsuario"/>
@@ -34,17 +16,11 @@
 <message name="getUsuarioResponse">
 <part name="parameters" element="tns:getUsuarioResponse"/>
 </message>
-<message name="eliminaUsuario">
-<part name="parameters" element="tns:eliminaUsuario"/>
+<message name="editaUsuario">
+<part name="parameters" element="tns:editaUsuario"/>
 </message>
-<message name="eliminaUsuarioResponse">
-<part name="parameters" element="tns:eliminaUsuarioResponse"/>
-</message>
-<message name="getUsuarios">
-<part name="parameters" element="tns:getUsuarios"/>
-</message>
-<message name="getUsuariosResponse">
-<part name="parameters" element="tns:getUsuariosResponse"/>
+<message name="editaUsuarioResponse">
+<part name="parameters" element="tns:editaUsuarioResponse"/>
 </message>
 <message name="insertUsuario">
 <part name="parameters" element="tns:insertUsuario"/>
@@ -52,80 +28,87 @@
 <message name="insertUsuarioResponse">
 <part name="parameters" element="tns:insertUsuarioResponse"/>
 </message>
-<message name="crearBD">
-<part name="parameters" element="tns:crearBD"/>
+<message name="eliminaUsuario">
+<part name="parameters" element="tns:eliminaUsuario"/>
 </message>
-<message name="crearBDResponse">
-<part name="parameters" element="tns:crearBDResponse"/>
+<message name="eliminaUsuarioResponse">
+<part name="parameters" element="tns:eliminaUsuarioResponse"/>
+</message>
+<message name="hello">
+<part name="parameters" element="tns:hello"/>
+</message>
+<message name="helloResponse">
+<part name="parameters" element="tns:helloResponse"/>
+</message>
+<message name="myFirstSoapCall">
+<part name="parameters" element="tns:myFirstSoapCall"/>
+</message>
+<message name="myFirstSoapCallResponse">
+<part name="parameters" element="tns:myFirstSoapCallResponse"/>
+</message>
+<message name="getUsuarios">
+<part name="parameters" element="tns:getUsuarios"/>
+</message>
+<message name="getUsuariosResponse">
+<part name="parameters" element="tns:getUsuariosResponse"/>
+</message>
+<message name="agregaTabla">
+<part name="parameters" element="tns:agregaTabla"/>
+</message>
+<message name="agregaTablaResponse">
+<part name="parameters" element="tns:agregaTablaResponse"/>
+</message>
+<message name="getTabla">
+<part name="parameters" element="tns:getTabla"/>
+</message>
+<message name="getTablaResponse">
+<part name="parameters" element="tns:getTablaResponse"/>
 </message>
 <portType name="Zote">
-<operation name="myFirstSoapCall">
-<input wsam:Action="http://soapwebservice/Zote/myFirstSoapCallRequest" message="tns:myFirstSoapCall"/>
-<output wsam:Action="http://soapwebservice/Zote/myFirstSoapCallResponse" message="tns:myFirstSoapCallResponse"/>
-</operation>
-<operation name="hello">
-<input wsam:Action="http://soapwebservice/Zote/helloRequest" message="tns:hello"/>
-<output wsam:Action="http://soapwebservice/Zote/helloResponse" message="tns:helloResponse"/>
-</operation>
-<operation name="editaUsuario">
-<input wsam:Action="http://soapwebservice/Zote/editaUsuarioRequest" message="tns:editaUsuario"/>
-<output wsam:Action="http://soapwebservice/Zote/editaUsuarioResponse" message="tns:editaUsuarioResponse"/>
-</operation>
-<operation name="agregaTabla">
-<input wsam:Action="http://soapwebservice/Zote/agregaTablaRequest" message="tns:agregaTabla"/>
-<output wsam:Action="http://soapwebservice/Zote/agregaTablaResponse" message="tns:agregaTablaResponse"/>
+<operation name="crearBD">
+<input wsam:Action="http://soapwebservice/Zote/crearBDRequest" message="tns:crearBD"/>
+<output wsam:Action="http://soapwebservice/Zote/crearBDResponse" message="tns:crearBDResponse"/>
 </operation>
 <operation name="getUsuario">
 <input wsam:Action="http://soapwebservice/Zote/getUsuarioRequest" message="tns:getUsuario"/>
 <output wsam:Action="http://soapwebservice/Zote/getUsuarioResponse" message="tns:getUsuarioResponse"/>
 </operation>
-<operation name="eliminaUsuario">
-<input wsam:Action="http://soapwebservice/Zote/eliminaUsuarioRequest" message="tns:eliminaUsuario"/>
-<output wsam:Action="http://soapwebservice/Zote/eliminaUsuarioResponse" message="tns:eliminaUsuarioResponse"/>
-</operation>
-<operation name="getUsuarios">
-<input wsam:Action="http://soapwebservice/Zote/getUsuariosRequest" message="tns:getUsuarios"/>
-<output wsam:Action="http://soapwebservice/Zote/getUsuariosResponse" message="tns:getUsuariosResponse"/>
+<operation name="editaUsuario">
+<input wsam:Action="http://soapwebservice/Zote/editaUsuarioRequest" message="tns:editaUsuario"/>
+<output wsam:Action="http://soapwebservice/Zote/editaUsuarioResponse" message="tns:editaUsuarioResponse"/>
 </operation>
 <operation name="insertUsuario">
 <input wsam:Action="http://soapwebservice/Zote/insertUsuarioRequest" message="tns:insertUsuario"/>
 <output wsam:Action="http://soapwebservice/Zote/insertUsuarioResponse" message="tns:insertUsuarioResponse"/>
 </operation>
-<operation name="crearBD">
-<input wsam:Action="http://soapwebservice/Zote/crearBDRequest" message="tns:crearBD"/>
-<output wsam:Action="http://soapwebservice/Zote/crearBDResponse" message="tns:crearBDResponse"/>
+<operation name="eliminaUsuario">
+<input wsam:Action="http://soapwebservice/Zote/eliminaUsuarioRequest" message="tns:eliminaUsuario"/>
+<output wsam:Action="http://soapwebservice/Zote/eliminaUsuarioResponse" message="tns:eliminaUsuarioResponse"/>
+</operation>
+<operation name="hello">
+<input wsam:Action="http://soapwebservice/Zote/helloRequest" message="tns:hello"/>
+<output wsam:Action="http://soapwebservice/Zote/helloResponse" message="tns:helloResponse"/>
+</operation>
+<operation name="myFirstSoapCall">
+<input wsam:Action="http://soapwebservice/Zote/myFirstSoapCallRequest" message="tns:myFirstSoapCall"/>
+<output wsam:Action="http://soapwebservice/Zote/myFirstSoapCallResponse" message="tns:myFirstSoapCallResponse"/>
+</operation>
+<operation name="getUsuarios">
+<input wsam:Action="http://soapwebservice/Zote/getUsuariosRequest" message="tns:getUsuarios"/>
+<output wsam:Action="http://soapwebservice/Zote/getUsuariosResponse" message="tns:getUsuariosResponse"/>
+</operation>
+<operation name="agregaTabla">
+<input wsam:Action="http://soapwebservice/Zote/agregaTablaRequest" message="tns:agregaTabla"/>
+<output wsam:Action="http://soapwebservice/Zote/agregaTablaResponse" message="tns:agregaTablaResponse"/>
+</operation>
+<operation name="getTabla">
+<input wsam:Action="http://soapwebservice/Zote/getTablaRequest" message="tns:getTabla"/>
+<output wsam:Action="http://soapwebservice/Zote/getTablaResponse" message="tns:getTablaResponse"/>
 </operation>
 </portType>
 <binding name="ZotePortBinding" type="tns:Zote">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="myFirstSoapCall">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="hello">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="editaUsuario">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="agregaTabla">
+<operation name="crearBD">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -143,16 +126,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="eliminaUsuario">
-<soap:operation soapAction=""/>
-<input>
-<soap:body use="literal"/>
-</input>
-<output>
-<soap:body use="literal"/>
-</output>
-</operation>
-<operation name="getUsuarios">
+<operation name="editaUsuario">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -170,7 +144,52 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="crearBD">
+<operation name="eliminaUsuario">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="hello">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="myFirstSoapCall">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getUsuarios">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="agregaTabla">
+<soap:operation soapAction=""/>
+<input>
+<soap:body use="literal"/>
+</input>
+<output>
+<soap:body use="literal"/>
+</output>
+</operation>
+<operation name="getTabla">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

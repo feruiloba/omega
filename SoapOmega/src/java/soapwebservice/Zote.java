@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -243,59 +244,129 @@ public class Zote {
     @WebMethod(operationName = "agregaTabla")
     public Boolean agregaTabla(@WebParam(name = "username") String username, @WebParam(name = "nombre") String nombre, @WebParam(name = "params") String params, @WebParam(name = "tipos") String tipos) {
         //TODO write your implementation code here:
-        String[] parametros = params.split(",");
-        String[] type = tipos.split(","); 
+        
         boolean resp;
-        StringBuilder addparams = new StringBuilder();
-        addparams.append("create table");
-        addparams.append(" "+nombre + " (id int not null, ");
         
         try{
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd, usuario, cont);
             
-            for(int i = 0; i<parametros.length; i++){
-                addparams.append(parametros[i]+" ");
-                switch(type[i]){
-                    case("varchar25"):
-                        addparams.append("varchar(25),");
-                        break;
-                    case("Integer"):
-                        addparams.append("int,");
-                        break;
-                    case("Double"):
-                        addparams.append("double,");
-                        break;
-                    case("varchar50"):
-                        addparams.append("varchar(50),");
-                        break;
-                   
-                }
+            DatabaseMetaData meta = con.getMetaData();
+            ResultSet res = meta.getTables(null, null, null, new String[]{"TABLE"});
+            ArrayList<String> tablas = new ArrayList<String>();
+            while (res.next()) {
+                tablas.add(res.getString("TABLE_NAME"));
             }
-            addparams.append(" primary key(id))");
-            System.out.println(addparams.toString());
-        //tam parametros = tam type
-            Statement query = con.createStatement();
-            query.executeUpdate(addparams.toString());
-            System.out.println("Se agregó la tabla");
-            //crearBD("omegaBD","root","root");
-            con.close();
-            Class.forName("org.apache.derby.jdbc.ClientDriver");
-            con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd, usuario, cont);
+
+            res.close();
             
-            String queryTiene = "insert into TIENE values('"+username+"','"+nombre+"')";
-            Statement query2 = con.createStatement();
-            query2.executeUpdate(queryTiene);
-            System.out.println("Si insertó en tiene");
-            resp= true;
+            if (!tablas.contains(nombre)) {
+
+                String[] parametros = params.split(",");
+                String[] type = tipos.split(",");
+
+                StringBuilder addparams = new StringBuilder();
+                addparams.append("create table");
+                addparams.append(" " + nombre + " (id int not null, ");
+
+                for (int i = 0; i < parametros.length; i++) {
+                    addparams.append(parametros[i] + " ");
+                    switch (type[i]) {
+                        case ("varchar25"):
+                            addparams.append("varchar(25),");
+                            break;
+                        case ("Integer"):
+                            addparams.append("int,");
+                            break;
+                        case ("Double"):
+                            addparams.append("double,");
+                            break;
+                        case ("varchar50"):
+                            addparams.append("varchar(50),");
+                            break;
+                        case("boolean"):
+                            addparams.append("BOOLEAN, ");
+                            break;
+
+                    }
+                }
+                addparams.append(" primary key(id))");
+                System.out.println(addparams.toString());
+                //tam parametros = tam type
+
+                Statement query = con.createStatement();
+                query.executeUpdate(addparams.toString());
+                System.out.println("Se agregó la tabla");
+                //crearBD("omegaBD","root","root");
+                System.out.println("se va a insertar en tiene: " + username + " y " + nombre);
+                String queryTiene = "insert into TIENE values('" + username + "','" + nombre + "')";
+                Statement query2 = con.createStatement();
+                query2.executeUpdate(queryTiene);
+                System.out.println("Si insertó en tiene");
+                resp = true;
+            }
+            else{
+                System.out.println("La tabla "+nombre+" ya existe");
+                resp = false;
+            }
         }catch(Exception e){
-            resp= false;
+            System.err.println(e.getMessage());
+            resp = false;
         }
         try{
             con.close();
         }catch(Exception e){}
         return resp;
         
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getTabla")
+    public String getTabla(@WebParam(name = "nombre") String nombre) {
+        //TODO write your implementation code here:
+        String resp="";
+        String QueryString;
+        try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd, usuario, cont);
+            Statement query = con.createStatement();
+            
+            QueryString = "select * from "+nombre;
+            ResultSet rs = query.executeQuery(QueryString);
+            
+            ResultSetMetaData metadata = rs.getMetaData();
+            int columnCount = metadata.getColumnCount();
+            System.out.println("Num columnas: "+columnCount);
+            int renglones =0;
+            while(rs.next()){
+                renglones++;
+                if(renglones==1){
+                    for (int i = 1; i <= columnCount; i++) {
+                        System.out.println("Columna " + i + "es: " + metadata.getColumnName(i));
+                        resp += metadata.getColumnName(i)+",";
+                    }
+                    resp+="|";
+                }
+                for (int i = 1; i <= columnCount; i++) {
+                        System.out.println("Columna " + i + "es: " + metadata.getColumnName(i));
+                        resp += rs.getString(i)+",";
+                }
+            }
+            if(renglones==0){
+                System.out.println("SOAP: Esa tabla no tiene datos");
+                resp = "NO HAY DATOS EN ESTA TABLA";
+            }
+            
+            
+        }
+        catch(Exception e){
+            System.err.println(e.getMessage());
+            resp = "NO SE PUDO";
+        }
+        try{con.close();}catch(Exception e){}
+        return resp;
     }
 
 }

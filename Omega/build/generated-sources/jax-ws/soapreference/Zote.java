@@ -26,36 +26,39 @@ public interface Zote {
 
     /**
      * 
-     * @param greeting
-     * @param myNumber
+     * @param nombrebd
+     * @param usuario
+     * @param cont
      * @return
-     *     returns java.lang.String
+     *     returns java.lang.Boolean
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "myFirstSoapCall", targetNamespace = "http://soapwebservice/", className = "soapreference.MyFirstSoapCall")
-    @ResponseWrapper(localName = "myFirstSoapCallResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.MyFirstSoapCallResponse")
-    @Action(input = "http://soapwebservice/Zote/myFirstSoapCallRequest", output = "http://soapwebservice/Zote/myFirstSoapCallResponse")
-    public String myFirstSoapCall(
-        @WebParam(name = "greeting", targetNamespace = "")
-        String greeting,
-        @WebParam(name = "myNumber", targetNamespace = "")
-        int myNumber);
+    @RequestWrapper(localName = "crearBD", targetNamespace = "http://soapwebservice/", className = "soapreference.CrearBD")
+    @ResponseWrapper(localName = "crearBDResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.CrearBDResponse")
+    @Action(input = "http://soapwebservice/Zote/crearBDRequest", output = "http://soapwebservice/Zote/crearBDResponse")
+    public Boolean crearBD(
+        @WebParam(name = "nombrebd", targetNamespace = "")
+        String nombrebd,
+        @WebParam(name = "cont", targetNamespace = "")
+        String cont,
+        @WebParam(name = "usuario", targetNamespace = "")
+        String usuario);
 
     /**
      * 
-     * @param name
+     * @param username
      * @return
      *     returns java.lang.String
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "hello", targetNamespace = "http://soapwebservice/", className = "soapreference.Hello")
-    @ResponseWrapper(localName = "helloResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.HelloResponse")
-    @Action(input = "http://soapwebservice/Zote/helloRequest", output = "http://soapwebservice/Zote/helloResponse")
-    public String hello(
-        @WebParam(name = "name", targetNamespace = "")
-        String name);
+    @RequestWrapper(localName = "getUsuario", targetNamespace = "http://soapwebservice/", className = "soapreference.GetUsuario")
+    @ResponseWrapper(localName = "getUsuarioResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.GetUsuarioResponse")
+    @Action(input = "http://soapwebservice/Zote/getUsuarioRequest", output = "http://soapwebservice/Zote/getUsuarioResponse")
+    public String getUsuario(
+        @WebParam(name = "username", targetNamespace = "")
+        String username);
 
     /**
      * 
@@ -86,75 +89,6 @@ public interface Zote {
 
     /**
      * 
-     * @param tipos
-     * @param params
-     * @param nombre
-     * @param username
-     * @return
-     *     returns java.lang.Boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "agregaTabla", targetNamespace = "http://soapwebservice/", className = "soapreference.AgregaTabla")
-    @ResponseWrapper(localName = "agregaTablaResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.AgregaTablaResponse")
-    @Action(input = "http://soapwebservice/Zote/agregaTablaRequest", output = "http://soapwebservice/Zote/agregaTablaResponse")
-    public Boolean agregaTabla(
-        @WebParam(name = "username", targetNamespace = "")
-        String username,
-        @WebParam(name = "nombre", targetNamespace = "")
-        String nombre,
-        @WebParam(name = "params", targetNamespace = "")
-        String params,
-        @WebParam(name = "tipos", targetNamespace = "")
-        String tipos);
-
-    /**
-     * 
-     * @param username
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getUsuario", targetNamespace = "http://soapwebservice/", className = "soapreference.GetUsuario")
-    @ResponseWrapper(localName = "getUsuarioResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.GetUsuarioResponse")
-    @Action(input = "http://soapwebservice/Zote/getUsuarioRequest", output = "http://soapwebservice/Zote/getUsuarioResponse")
-    public String getUsuario(
-        @WebParam(name = "username", targetNamespace = "")
-        String username);
-
-    /**
-     * 
-     * @param pass
-     * @param username
-     * @return
-     *     returns java.lang.Boolean
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "eliminaUsuario", targetNamespace = "http://soapwebservice/", className = "soapreference.EliminaUsuario")
-    @ResponseWrapper(localName = "eliminaUsuarioResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.EliminaUsuarioResponse")
-    @Action(input = "http://soapwebservice/Zote/eliminaUsuarioRequest", output = "http://soapwebservice/Zote/eliminaUsuarioResponse")
-    public Boolean eliminaUsuario(
-        @WebParam(name = "username", targetNamespace = "")
-        String username,
-        @WebParam(name = "pass", targetNamespace = "")
-        String pass);
-
-    /**
-     * 
-     * @return
-     *     returns java.lang.String
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getUsuarios", targetNamespace = "http://soapwebservice/", className = "soapreference.GetUsuarios")
-    @ResponseWrapper(localName = "getUsuariosResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.GetUsuariosResponse")
-    @Action(input = "http://soapwebservice/Zote/getUsuariosRequest", output = "http://soapwebservice/Zote/getUsuariosResponse")
-    public String getUsuarios();
-
-    /**
-     * 
      * @param gender
      * @param pass
      * @param phone
@@ -182,23 +116,104 @@ public interface Zote {
 
     /**
      * 
-     * @param nombrebd
-     * @param usuario
-     * @param cont
+     * @param pass
+     * @param username
      * @return
      *     returns java.lang.Boolean
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "crearBD", targetNamespace = "http://soapwebservice/", className = "soapreference.CrearBD")
-    @ResponseWrapper(localName = "crearBDResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.CrearBDResponse")
-    @Action(input = "http://soapwebservice/Zote/crearBDRequest", output = "http://soapwebservice/Zote/crearBDResponse")
-    public Boolean crearBD(
-        @WebParam(name = "nombrebd", targetNamespace = "")
-        String nombrebd,
-        @WebParam(name = "cont", targetNamespace = "")
-        String cont,
-        @WebParam(name = "usuario", targetNamespace = "")
-        String usuario);
+    @RequestWrapper(localName = "eliminaUsuario", targetNamespace = "http://soapwebservice/", className = "soapreference.EliminaUsuario")
+    @ResponseWrapper(localName = "eliminaUsuarioResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.EliminaUsuarioResponse")
+    @Action(input = "http://soapwebservice/Zote/eliminaUsuarioRequest", output = "http://soapwebservice/Zote/eliminaUsuarioResponse")
+    public Boolean eliminaUsuario(
+        @WebParam(name = "username", targetNamespace = "")
+        String username,
+        @WebParam(name = "pass", targetNamespace = "")
+        String pass);
+
+    /**
+     * 
+     * @param name
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "hello", targetNamespace = "http://soapwebservice/", className = "soapreference.Hello")
+    @ResponseWrapper(localName = "helloResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.HelloResponse")
+    @Action(input = "http://soapwebservice/Zote/helloRequest", output = "http://soapwebservice/Zote/helloResponse")
+    public String hello(
+        @WebParam(name = "name", targetNamespace = "")
+        String name);
+
+    /**
+     * 
+     * @param greeting
+     * @param myNumber
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "myFirstSoapCall", targetNamespace = "http://soapwebservice/", className = "soapreference.MyFirstSoapCall")
+    @ResponseWrapper(localName = "myFirstSoapCallResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.MyFirstSoapCallResponse")
+    @Action(input = "http://soapwebservice/Zote/myFirstSoapCallRequest", output = "http://soapwebservice/Zote/myFirstSoapCallResponse")
+    public String myFirstSoapCall(
+        @WebParam(name = "greeting", targetNamespace = "")
+        String greeting,
+        @WebParam(name = "myNumber", targetNamespace = "")
+        int myNumber);
+
+    /**
+     * 
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getUsuarios", targetNamespace = "http://soapwebservice/", className = "soapreference.GetUsuarios")
+    @ResponseWrapper(localName = "getUsuariosResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.GetUsuariosResponse")
+    @Action(input = "http://soapwebservice/Zote/getUsuariosRequest", output = "http://soapwebservice/Zote/getUsuariosResponse")
+    public String getUsuarios();
+
+    /**
+     * 
+     * @param tipos
+     * @param params
+     * @param nombre
+     * @param username
+     * @return
+     *     returns java.lang.Boolean
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "agregaTabla", targetNamespace = "http://soapwebservice/", className = "soapreference.AgregaTabla")
+    @ResponseWrapper(localName = "agregaTablaResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.AgregaTablaResponse")
+    @Action(input = "http://soapwebservice/Zote/agregaTablaRequest", output = "http://soapwebservice/Zote/agregaTablaResponse")
+    public Boolean agregaTabla(
+        @WebParam(name = "username", targetNamespace = "")
+        String username,
+        @WebParam(name = "nombre", targetNamespace = "")
+        String nombre,
+        @WebParam(name = "params", targetNamespace = "")
+        String params,
+        @WebParam(name = "tipos", targetNamespace = "")
+        String tipos);
+
+    /**
+     * 
+     * @param nombre
+     * @return
+     *     returns java.lang.String
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getTabla", targetNamespace = "http://soapwebservice/", className = "soapreference.GetTabla")
+    @ResponseWrapper(localName = "getTablaResponse", targetNamespace = "http://soapwebservice/", className = "soapreference.GetTablaResponse")
+    @Action(input = "http://soapwebservice/Zote/getTablaRequest", output = "http://soapwebservice/Zote/getTablaResponse")
+    public String getTabla(
+        @WebParam(name = "nombre", targetNamespace = "")
+        String nombre);
 
 }

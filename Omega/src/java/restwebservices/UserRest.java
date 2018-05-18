@@ -69,7 +69,7 @@ public class UserRest {
         String usuario = getUsuario(username);
         System.out.println("Usuario obtenido: "+usuario);
         
-        if (username != null) {
+        if (usuario != null && !usuario.equals("NO SE PUDO")) {
             HttpSession mySession = request.getSession();
             mySession.setAttribute("username", username);
         }
