@@ -7,11 +7,6 @@ package servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.Statement;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,19 +20,12 @@ import soapreference.Zote_Service;
  *
  * @author PLEVERG
  */
-public class algo extends HttpServlet {
+public class editar2 extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+
     @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/Zote/Zote.wsdl")
     private Zote_Service service;
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -51,63 +39,67 @@ public class algo extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            /* TODO output your page here. You may use following sample code. */
+            HttpSession mySession = request.getSession();
+            String usuario = mySession.getAttribute("username").toString();
+            String tabla = mySession.getAttribute("editar").toString();
             
-            HttpSession session = request.getSession();
-            String usuario = session.getAttribute("username").toString();
+            if(usuario==null){
+                RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/index.jsp");
+                dispatcher.forward(request, response);
+            }
+            else{
+                out.println("<h2>Bienvenido "+usuario+"</h2><br>");
+            }
             
-            if (usuario != null) {
-                //boolean prueba1 = agregaTabla(usuario, "Amigos","nombre,genero,edad","varchar50,varchar25,Integer");
-                //boolean prueba2 = agregaTabla(usuario, "Mascotas","nombre,raza,edad","varchar50,varchar25,Integer");
-                //out.println("<h1>"+prueba1+"</h1>");
-
-                Class.forName("org.apache.derby.jdbc.ClientDriver");
-                Connection con = DriverManager.getConnection("jdbc:derby://localhost:1527/omegaBD","root","root");
-                Statement st = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
-                ResultSet rs = st.executeQuery("SELECT * FROM TIENE where username='" + usuario + "'"); // WHERE username = '"+usuario+"'");   
-
-                int row = 0;
-                Object[][] myResultSet = ResultSetToArray(rs);
-                session.setAttribute("myResultSet", myResultSet);
-                session.setAttribute("row", row);
+            if(tabla==null){
                 RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/scroll.jsp");
                 dispatcher.forward(request, response);
-                con.close();
+            }
+            else{
+                out.println("<h2>Editar tabla "+tabla+"</h2><br>");
+                String tablaInfo = getTabla(tabla);
+                
+                String nextJSP = "/include.jsp";
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
+                dispatcher.include(request, response); 
+                
+                String[] aux=tablaInfo.split("&");
+                String[] columnNames = aux[0].split(",");
+                String[] data = aux[1].split(",");
+                out.println("<table id=\"tabla\" border=\"1\">");
+                out.println("<thead id=\"header\">");
+                out.println("<tr>");
+                for(int i=0; i<columnNames.length; i++){
+                    out.println("<th>"+columnNames[i]+"</th>");
+                }
+                out.println("<th>Cambiar</th>");
+                out.println("</tr></thead>");
+                out.println("<tbody>");
+                
+                for(int i=0; i<data.length; i=i+columnNames.length){
+                    out.println("<tr id=\""+i+"\">");
+                    for(int j=0; j<columnNames.length; j++){
+                        out.println("<td><input type=\"text\" value='"+data[i+j]+"'"+"/></td>");
+                    }
+                    out.println("<td><input type=\"submit\" onclick=\"editaTabla('"+tabla+"',"+i+")\" value=\""+i+"\"</td>");
+                    out.println("</tr>");
+                }
+                //out.println("<tr><td>Hola</td><td>Hola</td></tr>");
+                out.println("</tbody>");
+                out.println("</table>");
             }
             
-        }
-        catch(Exception e){
-                System.out.println("ERROR: "+e.toString());
+            
+            
         }
     }
     
-    
-    
-    private Object[][] ResultSetToArray(ResultSet rs) {
-        Object data[][] = null;
-        try {
-            rs.last();
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int numCols = rsmd.getColumnCount();
-            int numRows = rs.getRow();
-            data = new Object[numRows][numCols];
-            int j = 0;
-            rs.beforeFirst();
-            while (rs.next()) {
-                for (int i = 0; i < numCols; i++) {
-                    data[j][i] = rs.getObject(i + 1);
-                }
-                j++;
-            }
-        } catch (Exception e) {
-            System.out.println(e);
-        }
-        return data;
-    }
-        private Boolean agregaTabla(java.lang.String username, java.lang.String nombre, java.lang.String params, java.lang.String tipos) {
+        private String getTabla(java.lang.String nombre) {
         // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
         // If the calling of port operations may lead to race condition some synchronization is required.
         soapreference.Zote port = service.getZotePort();
-        return port.agregaTabla(username, nombre, params, tipos);
+        return port.getTabla(nombre);
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

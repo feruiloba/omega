@@ -8,6 +8,10 @@
         <servlet-name>agregateTabla</servlet-name>
         <servlet-class>servlets.agregateTabla</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>editar2</servlet-name>
+        <servlet-class>servlets.editar2</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>algo</servlet-name>
         <url-pattern>/algo</url-pattern>
@@ -15,6 +19,10 @@
     <servlet-mapping>
         <servlet-name>agregateTabla</servlet-name>
         <url-pattern>/agregateTabla</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>editar2</servlet-name>
+        <url-pattern>/editar2</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -40,6 +40,10 @@
 
 <xs:element name="myFirstSoapCallResponse" type="tns:myFirstSoapCallResponse"/>
 
+<xs:element name="updateTabla" type="tns:updateTabla"/>
+
+<xs:element name="updateTablaResponse" type="tns:updateTablaResponse"/>
+
 <xs:complexType name="insertUsuario">
 <xs:sequence>
 <xs:element name="username" type="xs:string" minOccurs="0"/>
@@ -118,18 +122,6 @@
 </xs:sequence>
 </xs:complexType>
 
-<xs:complexType name="getUsuario">
-<xs:sequence>
-<xs:element name="username" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
-<xs:complexType name="getUsuarioResponse">
-<xs:sequence>
-<xs:element name="return" type="xs:string" minOccurs="0"/>
-</xs:sequence>
-</xs:complexType>
-
 <xs:complexType name="editaUsuario">
 <xs:sequence>
 <xs:element name="username" type="xs:string" minOccurs="0"/>
@@ -141,6 +133,18 @@
 </xs:complexType>
 
 <xs:complexType name="editaUsuarioResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getUsuario">
+<xs:sequence>
+<xs:element name="username" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="getUsuarioResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:string" minOccurs="0"/>
 </xs:sequence>
@@ -168,6 +172,20 @@
 </xs:complexType>
 
 <xs:complexType name="agregaTablaResponse">
+<xs:sequence>
+<xs:element name="return" type="xs:boolean" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="updateTabla">
+<xs:sequence>
+<xs:element name="nomTabla" type="xs:string" minOccurs="0"/>
+<xs:element name="valores" type="xs:string" minOccurs="0"/>
+<xs:element name="columnas" type="xs:string" minOccurs="0"/>
+</xs:sequence>
+</xs:complexType>
+
+<xs:complexType name="updateTablaResponse">
 <xs:sequence>
 <xs:element name="return" type="xs:boolean" minOccurs="0"/>
 </xs:sequence>

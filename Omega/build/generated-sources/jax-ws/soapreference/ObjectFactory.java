@@ -44,6 +44,8 @@ public class ObjectFactory {
     private final static QName _InsertUsuarioResponse_QNAME = new QName("http://soapwebservice/", "insertUsuarioResponse");
     private final static QName _MyFirstSoapCall_QNAME = new QName("http://soapwebservice/", "myFirstSoapCall");
     private final static QName _MyFirstSoapCallResponse_QNAME = new QName("http://soapwebservice/", "myFirstSoapCallResponse");
+    private final static QName _UpdateTabla_QNAME = new QName("http://soapwebservice/", "updateTabla");
+    private final static QName _UpdateTablaResponse_QNAME = new QName("http://soapwebservice/", "updateTablaResponse");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: soapreference
@@ -210,6 +212,22 @@ public class ObjectFactory {
      */
     public MyFirstSoapCallResponse createMyFirstSoapCallResponse() {
         return new MyFirstSoapCallResponse();
+    }
+
+    /**
+     * Create an instance of {@link UpdateTabla }
+     * 
+     */
+    public UpdateTabla createUpdateTabla() {
+        return new UpdateTabla();
+    }
+
+    /**
+     * Create an instance of {@link UpdateTablaResponse }
+     * 
+     */
+    public UpdateTablaResponse createUpdateTablaResponse() {
+        return new UpdateTablaResponse();
     }
 
     /**
@@ -390,6 +408,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://soapwebservice/", name = "myFirstSoapCallResponse")
     public JAXBElement<MyFirstSoapCallResponse> createMyFirstSoapCallResponse(MyFirstSoapCallResponse value) {
         return new JAXBElement<MyFirstSoapCallResponse>(_MyFirstSoapCallResponse_QNAME, MyFirstSoapCallResponse.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateTabla }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soapwebservice/", name = "updateTabla")
+    public JAXBElement<UpdateTabla> createUpdateTabla(UpdateTabla value) {
+        return new JAXBElement<UpdateTabla>(_UpdateTabla_QNAME, UpdateTabla.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link UpdateTablaResponse }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://soapwebservice/", name = "updateTablaResponse")
+    public JAXBElement<UpdateTablaResponse> createUpdateTablaResponse(UpdateTablaResponse value) {
+        return new JAXBElement<UpdateTablaResponse>(_UpdateTablaResponse_QNAME, UpdateTablaResponse.class, null, value);
     }
 
 }
