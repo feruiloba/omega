@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -314,6 +315,44 @@ public class Zote {
         }catch(Exception e){}
         return resp;
         
+    }
+
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getTabla")
+    public String getTabla(@WebParam(name = "nombre") String nombre) {
+        //TODO write your implementation code here:
+        String resp="";
+        String QueryString;
+        try {
+            Class.forName("org.apache.derby.jdbc.ClientDriver");
+            con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd, usuario, cont);
+            Statement query = con.createStatement();
+            
+            QueryString = "select * from "+nombre;
+            ResultSet rs = query.executeQuery(QueryString);
+            if (!rs.next()) {
+                System.out.println("SOAP: Esa tabla no existe");
+                resp = "NO SE PUDO";
+            }
+            else{
+                ResultSetMetaData metadata = rs.getMetaData();
+                int columnCount = metadata.getColumnCount();
+                while(rs.next()){
+                    for (int i = 1; i <= columnCount; i++) {
+                        resp += metadata.getColumnName(i) + ","+rs.getString(i) + ",";          
+                    }
+                }
+            }
+            return resp;
+            
+        }
+        catch(Exception e){
+            
+        }
+        
+        return null;
     }
 
 }
