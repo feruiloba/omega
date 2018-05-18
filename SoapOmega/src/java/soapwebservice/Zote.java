@@ -332,27 +332,38 @@ public class Zote {
             
             QueryString = "select * from "+nombre;
             ResultSet rs = query.executeQuery(QueryString);
-            if (!rs.next()) {
-                System.out.println("SOAP: Esa tabla no existe");
-                resp = "NO SE PUDO";
-            }
-            else{
-                ResultSetMetaData metadata = rs.getMetaData();
-                int columnCount = metadata.getColumnCount();
-                while(rs.next()){
+            
+            ResultSetMetaData metadata = rs.getMetaData();
+            int columnCount = metadata.getColumnCount();
+            System.out.println("Num columnas: "+columnCount);
+            int renglones =0;
+            while(rs.next()){
+                renglones++;
+                if(renglones==1){
                     for (int i = 1; i <= columnCount; i++) {
-                        resp += metadata.getColumnName(i) + ","+rs.getString(i) + ",";          
+                        System.out.println("Columna " + i + "es: " + metadata.getColumnName(i));
+                        resp += metadata.getColumnName(i)+",";
                     }
+                    resp+="|";
+                }
+                for (int i = 1; i <= columnCount; i++) {
+                        System.out.println("Columna " + i + "es: " + metadata.getColumnName(i));
+                        resp += rs.getString(i)+",";
                 }
             }
-            return resp;
+            if(renglones==0){
+                System.out.println("SOAP: Esa tabla no tiene datos");
+                resp = "NO HAY DATOS EN ESTA TABLA";
+            }
+            
             
         }
         catch(Exception e){
-            
+            System.err.println(e.getMessage());
+            resp = "NO SE PUDO";
         }
-        
-        return null;
+        try{con.close();}catch(Exception e){}
+        return resp;
     }
 
 }

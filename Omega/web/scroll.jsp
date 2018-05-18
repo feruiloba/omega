@@ -41,6 +41,12 @@
                     dispatcher.forward(request, response);
                 }
                 
+                String nueva = request.getParameter("nueva");
+                if (nueva != null) {
+                    mySession.setAttribute("nueva", usuario);
+                    RequestDispatcher dispatcher = request.getServletContext().getRequestDispatcher("/agregadorTablas");
+                    dispatcher.forward(request, response);
+                }
                 
                 if (request.getParameter("left") != null) {
                     if (row1 > 0) {
@@ -58,7 +64,7 @@
                         }
                     }
                 }
-                
+                out.println("<input type=\"submit\" value=\"nueva\" name=\"nueva\"/><br><br>");
                 out.println("<table border=\"1\">");
                 out.println("<thead>");
                 out.println("<tr>");
