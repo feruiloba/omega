@@ -65,6 +65,7 @@ public class UserRest {
     @Produces(MediaType.APPLICATION_XML)
     public String getUsuario(@Context HttpServletRequest request, @QueryParam("username") String username, @QueryParam("pass") String pass){//@Context HttpServletRequest request) {
         crearBD("omegaBD","root","root");
+        System.out.println("Está creando BD");
         String usuario = getUsuario(username);
         System.out.println("Usuario obtenido: "+usuario);
         
@@ -81,6 +82,7 @@ public class UserRest {
     @Consumes("text/html")
     public void postUsuario(@QueryParam("username") String username, @QueryParam("name") String name, @QueryParam("gender") String gender, @QueryParam("pass") String pass, @QueryParam("phone") String phone) {
         crearBD("omegaBD","root","root");
+        System.out.println("Está creando BD");
         System.out.println("POST: ");
         System.out.println(username+" "+ name+" "+ gender+" "+pass+" "+ phone);
         boolean insertado = insertUsuario(username, name, gender, pass, phone);

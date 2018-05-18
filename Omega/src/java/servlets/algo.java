@@ -18,12 +18,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.xml.ws.WebServiceRef;
+import soapreference.Zote_Service;
 
 /**
  *
  * @author FRUILOBAP
  */
 public class algo extends HttpServlet {
+
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/Zote/Zote.wsdl")
+    private Zote_Service service;
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -37,17 +42,23 @@ public class algo extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+            
+            HttpSession session = request.getSession();
+            String usuario = session.getAttribute("username").toString();
+            
+            boolean prueba = agregaTabla(usuario, "Amigos","nombre,genero,edad","varchar50,varchar25,Integer");
+            out.println("<h1>"+prueba+"</h1>");
 
       try{
+          
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             Connection con
                     = DriverManager.getConnection(
                             "jdbc:derby://localhost:1527/omegaBD",
                             "root",
                             "root");
-          Statement st = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY); 
-            ResultSet rs = st.executeQuery("SELECT * FROM USUARIOS");
-            
+            Statement st = con.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_READ_ONLY); 
+            ResultSet rs = st.executeQuery("SELECT * FROM AMIGOS"); // WHERE username = '"+usuario+"'");   
 
             int row = 0;
             Object [][] myResultSet = ResultSetToArray(rs);
@@ -63,6 +74,9 @@ public class algo extends HttpServlet {
           
         }
     }
+    
+    
+    
     private Object[][] ResultSetToArray(ResultSet rs) {
         Object data[][] = null;
         try {
@@ -122,5 +136,14 @@ public class algo extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private Boolean agregaTabla(java.lang.String username, java.lang.String nombre, java.lang.String params, java.lang.String tipos) {
+        // Note that the injected javax.xml.ws.Service reference as well as port objects are not thread safe.
+        // If the calling of port operations may lead to race condition some synchronization is required.
+        soapreference.Zote port = service.getZotePort();
+        return port.agregaTabla(username, nombre, params, tipos);
+    }
+
+    
 
 }

@@ -54,6 +54,8 @@ public class Zote {
        return greeting + " and the number is " + myNumber ;
     }
 
+    
+    
         /**
      * Crear la base de datos
      */
@@ -63,7 +65,7 @@ public class Zote {
             Class.forName("org.apache.derby.jdbc.ClientDriver");
             con = DriverManager.getConnection("jdbc:derby://localhost:1527/" + nombrebd + ";create=true;", usuario, cont);
             Statement query = con.createStatement();
-
+            System.out.println("Base de datos creada");
             String QueryString;
             DatabaseMetaData meta = con.getMetaData();
             ResultSet res = meta.getTables(null, null, null, new String[]{"TABLE"});
@@ -77,11 +79,18 @@ public class Zote {
             if (!tablas.contains("USUARIOS")) {
                 QueryString = "create table usuarios (username varchar(25) not null, name varchar(25), gender varchar(20), password varchar(25), phone varchar(20), primary key(username))";
                 query.executeUpdate(QueryString);
+                System.out.println("Creando usuarios");
+            }
+            else{
+                System.out.println("Tabla usuarios ya existe");
             }
             if(!tablas.contains("TIENE")) {
-                QueryString = "create table tiene (id_tiene int not null, id_tabla int not null, username varchar(25) not null references usuarios, primary key(id_tiene))";
+                QueryString = "create table tiene (username varchar(25) not null, nombre_tabla int not null, primary key(username))";
                 query.executeUpdate(QueryString);
+                System.out.println("Creando tabla tiene");
             }
+            else
+                System.out.println("Tabla tiene ya existe");
             
             return true;
         } catch (Exception e) {
@@ -184,6 +193,57 @@ public class Zote {
     public String getUsuarios() {
         //TODO write your implementation code here:
         return null;
+    }
+
+    /**
+     * Web service operation
+     */
+    
+    @WebMethod(operationName = "agregaTabla")
+    public Boolean agregaTabla(@WebParam(name = "username") String username, @WebParam(name = "nombre") String nombre, @WebParam(name = "params") String params, @WebParam(name = "tipos") String tipos) {
+        //TODO write your implementation code here:
+        String[] parametros = params.split(",");
+        String[] type = tipos.split(","); 
+        
+        StringBuilder addparams = new StringBuilder();
+        addparams.append("create table");
+        addparams.append(" "+nombre + " (id int not null, ");
+        
+        try{
+            for(int i = 0; i<parametros.length; i++){
+                addparams.append(parametros[i]+" ");
+                switch(type[i]){
+                    case("varchar25"):
+                        addparams.append("varchar(25),");
+                        break;
+                    case("Integer"):
+                        addparams.append("int,");
+                        break;
+                    case("Double"):
+                        addparams.append("double,");
+                        break;
+                    case("varchar50"):
+                        addparams.append("varchar(50),");
+                        break;
+                   
+                }
+            }
+            addparams.append(" primary key(id))");
+            System.out.println(addparams.toString());
+        //tam parametros = tam type
+            Statement query = con.createStatement();
+            query.executeUpdate(addparams.toString());
+            System.out.println("Se agregó la tabla");
+            //crearBD("omegaBD","root","root");
+            
+            String queryTiene = "insert into tiene values('"+username+"','"+nombre+"')";
+            Statement query2 = con.createStatement();
+            query2.executeUpdate(queryTiene);
+            System.out.println("Si insertó en tiene");
+            return true;
+        }catch(Exception e){
+            return false;
+        }
     }
 
 
