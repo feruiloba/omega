@@ -58,7 +58,35 @@ public class editar extends HttpServlet {
             else{
                 out.println("<h2>Editar tabla "+tabla+"</h2><br>");
                 String tablaInfo = getTabla(tabla);
-                out.println("<h3>Info:"+tablaInfo+"</h3>");
+                
+                String nextJSP = "/include.jsp";
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(nextJSP);
+                dispatcher.include(request, response); 
+                
+                String[] aux=tablaInfo.split("&");
+                String[] columnNames = aux[0].split(",");
+                String[] data = aux[1].split(",");
+                out.println("<table id=\"tabla\" border=\"1\">");
+                out.println("<thead id=\"header\">");
+                out.println("<tr>");
+                for(int i=0; i<columnNames.length; i++){
+                    out.println("<th>"+columnNames[i]+"</th>");
+                }
+                out.println("<th>Cambiar</th>");
+                out.println("</tr></thead>");
+                out.println("<tbody>");
+                
+                for(int i=0; i<data.length; i=i+columnNames.length){
+                    out.println("<tr id=\""+i+"\">");
+                    for(int j=0; j<columnNames.length; j++){
+                        out.println("<td><input type=\"text\" value='"+data[i+j]+"'"+"/></td>");
+                    }
+                    out.println("<td><input type=\"submit\" onclick=\"editaTabla('"+tabla+"',"+i+")\" value=\""+i+"\"</td>");
+                    out.println("</tr>");
+                }
+                //out.println("<tr><td>Hola</td><td>Hola</td></tr>");
+                out.println("</tbody>");
+                out.println("</table>");
             }
             
             
